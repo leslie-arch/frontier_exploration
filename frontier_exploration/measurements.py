@@ -221,6 +221,9 @@ class FrontierExplorationMap(TopDownMap):
         rectangle for each bounding box of each target in the episode"""
         if not isinstance(episode, ObjectGoalNavEpisode):
             return
+        sem_annos = self._sim.semantic_annotations()
+        if len(sem_annos.objects) == 0:
+            return
 
         bbox_mask = np.zeros_like(self._top_down_map)
         for goal in episode.goals:

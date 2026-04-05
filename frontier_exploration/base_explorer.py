@@ -282,11 +282,10 @@ class BaseExplorer(Sensor):
             self._sim,
         )
         if pixel.ndim == 1:
-            return self._sim.pathfinder.snap_point(
-                [realworld_y, self.agent_position[1], realworld_x]
-            )
+            point_array = np.array([realworld_y, self.agent_position[1], realworld_x], dtype=np.float32)
+            return self._sim.pathfinder.snap_point(point_array)
         snapped = [
-            self._sim.pathfinder.snap_point([y, self.agent_position[1], x])
+            self._sim.pathfinder.snap_point(np.array([y, self.agent_position[1], x], dtype=np.float32))
             for y, x in zip(realworld_y, realworld_x)  # noqa
         ]
         return np.array(snapped)

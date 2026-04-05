@@ -90,7 +90,19 @@ class FrontierSensor(Sensor):
             episodic_frontiers.append(pt)
         episodic_frontiers = np.array(episodic_frontiers)
 
-        return episodic_frontiers
+        # print(f"frontier_sensor get_observation sizeof(episodic_frontiers): {(episodic_frontiers.shape)}")
+        # --- 修改开始 ---
+        # 即使找到了多个点，我们也只取排序后的第一个点（最优解）
+        # 这样返回的 shape 永远是 (1, 2)，符合 _get_observation_space 的定义
+        if len(episodic_frontiers) > 0:
+            # 取第一个点并强制转换为 (1, 2) 形状
+            final_obs = np.array(episodic_frontiers[0], dtype=np.float32).reshape(1, 2)
+        else:
+            # 如果没找到点，返回全 0 的占位符
+            final_obs = np.zeros((1, 2), dtype=np.float32)
+                                                                                                            
+        return final_obs
+        # return episodic_frontiers
 
 
 def global_to_episodic_xy(episodic_start, episodic_yaw, pt):
