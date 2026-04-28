@@ -237,13 +237,13 @@ class FrontierExplorationMap(TopDownMap):
             )
 
             center = sem_scene.objects[object_id].aabb.center
-            x_len, _, z_len = sem_scene.objects[object_id].aabb.sizes / 2.0
+            x_len, _, z_len = sem_scene.objects[object_id].obb.sizes / 2.0
 
             # Nodes to draw rectangle
             corners = [
-                center + np.array([x, 0, z])
+                center() + np.array([x, 0, z])
                 for x, z in [(-x_len, -z_len), (x_len, z_len)]
-                if self._is_on_same_floor(center[1])
+                if self._is_on_same_floor(center()[1])
             ]
 
             if not corners:
